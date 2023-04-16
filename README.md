@@ -2,8 +2,6 @@
 
 The project has been officially stopped for maintenance.
 
-[**English**](./README.md) | [**中文简体**](./README_zh_CN.md)
-
 #### ✨ A fork with a greatly improved interface: [34j/so-vits-svc-fork](https://github.com/34j/so-vits-svc-fork)
 
 #### ✨ A client supports real-time conversion: [w-okada/voice-changer](https://github.com/w-okada/voice-changer)
