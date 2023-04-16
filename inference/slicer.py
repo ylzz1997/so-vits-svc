@@ -96,19 +96,15 @@ class Slicer:
             return {"0": {"slice": False, "split_time": f"0,{len(waveform)}"}}
         else:
             chunks = []
-            # 第一段静音并非从头开始，补上有声片段
             if sil_tags[0][0]:
                 chunks.append(
                     {"slice": False, "split_time": f"0,{min(waveform.shape[0], sil_tags[0][0] * self.hop_size)}"})
             for i in range(0, len(sil_tags)):
-                # 标识有声片段（跳过第一段）
                 if i:
                     chunks.append({"slice": False,
                                    "split_time": f"{sil_tags[i - 1][1] * self.hop_size},{min(waveform.shape[0], sil_tags[i][0] * self.hop_size)}"})
-                # 标识所有静音片段
                 chunks.append({"slice": True,
                                "split_time": f"{sil_tags[i][0] * self.hop_size},{min(waveform.shape[0], sil_tags[i][1] * self.hop_size)}"})
-            # 最后一段静音并非结尾，补上结尾片段
             if sil_tags[-1][1] * self.hop_size < len(waveform):
                 chunks.append({"slice": False, "split_time": f"{sil_tags[-1][1] * self.hop_size},{len(waveform)}"})
             chunk_dict = {}

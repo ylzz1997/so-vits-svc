@@ -129,7 +129,7 @@ class Svc(object):
         self.hop_size = self.hps_ms.data.hop_length
         self.spk2id = self.hps_ms.spk
         self.nsf_hifigan_enhance = nsf_hifigan_enhance
-        # 加载hubert
+   
         self.hubert_model = utils.get_hubert_model().to(self.dev)
         self.load_model()
         if os.path.exists(cluster_model_path):
@@ -139,7 +139,6 @@ class Svc(object):
             self.enhancer = Enhancer('nsf-hifigan', 'pretrain/nsf_hifigan/model',device=self.dev)
 
     def load_model(self):
-        # 获取模型配置
         self.net_g_ms = SynthesizerTrn(
             self.hps_ms.data.filter_length // 2 + 1,
             self.hps_ms.train.segment_size // self.hps_ms.data.hop_length,
@@ -219,11 +218,9 @@ class Svc(object):
         return audio, audio.shape[-1]
 
     def clear_empty(self):
-        # 清理显存
         torch.cuda.empty_cache()
 
     def unload_model(self):
-        # 卸载模型
         self.net_g_ms = self.net_g_ms.to("cpu")
         del self.net_g_ms
         if hasattr(self,"enhancer"): 
@@ -305,10 +302,8 @@ class RealTimeVC:
     def __init__(self):
         self.last_chunk = None
         self.last_o = None
-        self.chunk_len = 16000  # 区块长度
-        self.pre_len = 3840  # 交叉淡化长度，640的倍数
-
-    """输入输出都是1维numpy 音频波形数组"""
+        self.chunk_len = 16000  
+        self.pre_len = 3840 
 
     def process(self, svc_model, speaker_id, f_pitch_change, input_wav_path,
                 cluster_infer_ratio=0,
